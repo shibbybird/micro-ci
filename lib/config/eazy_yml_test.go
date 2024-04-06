@@ -40,7 +40,8 @@ func TestEazyYml(t *testing.T) {
 		eazy.Build.Image != "gradle:5.6.2-jdk8" ||
 		eazy.Build.Command[2] != "gradle build" ||
 		eazy.Deployment.Env[0] != "APP_ENV=integration" ||
-		eazy.Build.BuildEnvironment != "gradle" {
+		eazy.Build.BuildEnvironment != "gradle" ||
+		eazy.Integration.Env[0] != "FOO=bar" {
 		t.Error(eazy)
 	}
 

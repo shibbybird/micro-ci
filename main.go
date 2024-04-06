@@ -127,12 +127,15 @@ func main() {
 		}
 	}
 
+	// Get integration env variables
+	integrationEnv := yml.Integration.Env
+
 	for _, d := range peerDependencies {
-		startUnit(ctx, d, *openPortsLocally, runtime)
+		startUnit(ctx, d, *openPortsLocally, runtime, integrationEnv)
 	}
 
 	for _, d := range dependencies {
-		startUnit(ctx, d, *openPortsLocally, runtime)
+		startUnit(ctx, d, *openPortsLocally, runtime, integrationEnv)
 	}
 
 	envBuilder := builders.GetBuildEnvironment(yml.Build.BuildEnvironment)
@@ -262,7 +265,7 @@ func main() {
 	doCleanup(nil)
 }
 
-func startUnit(ctx context.Context, yml config.EazyYml, openPortsLocally bool, runtime runtimes.ContainerRuntime) {
+func startUnit(ctx context.Context, yml config.EazyYml, openPortsLocally bool, runtime runtimes.ContainerRuntime, additionalEnv []string) {
 	doCleanup := cleanUp(ctx, &runtime)
 
 	if len(yml.Integration.Bootstrap) > 0 {
@@ -277,7 +280,7 @@ func startUnit(ctx context.Context, yml config.EazyYml, openPortsLocally bool, r
 		}
 	}
 	_, err := runtime.StartContainerByEazyYml(ctx, yml, "", config.RuntimeConfig{
-		Env:         yml.Deployment.Env,
+		Env:         append(yml.Deployment.Env, additionalEnv...),
 		Wait:        false,
 		ExposePorts: openPortsLocally,
 		IsRootImage: true,

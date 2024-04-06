@@ -113,6 +113,8 @@ deployment:
     - '-c'
     - 'while ! curl http://eazy-kotlin-test-service:7070/health; do sleep 1; done;'
 integration:
+  env:
+    - 'FOO=bar'
   bootstrap:
     - '/bin/sh'
     - '-c'
