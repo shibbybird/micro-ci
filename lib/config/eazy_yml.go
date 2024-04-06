@@ -22,6 +22,7 @@ type EazyYml struct {
 		Health []string
 	}
 	Integration struct {
+		Env              []string
 		Bootstrap        []string
 		RunTest          []string `yaml:"runTest"`
 		Dependencies     []string

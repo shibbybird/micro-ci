@@ -20,6 +20,8 @@ deployment:
     - '-c'
     - 'while ! curl http://host.docker.internal:8080/health; do sleep 1; done;'
 integration:
+  env:
+    - 'FOO=bar'
   bootstrap:
     - '/bin/sh'
     - '-c'
